@@ -4,83 +4,80 @@ from tqdm import tqdm
 from datasets import load_dataset
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-
-# =========================
-# 1. Load model
-# =========================
-
-model_id = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
-
-tokenizer = AutoTokenizer.from_pretrained(model_id)
-
-model = AutoModelForCausalLM.from_pretrained(
-    model_id,
-    device_map="auto",
-    torch_dtype="auto"
-)
-
-model.eval()
+MODEL_ID = "Qwen/Qwen2.5-0.5B-Instruct"
+OUTPUT_PATH = "qwen_advbench_results.csv"
 
 
-# =========================
-# 2. Load benchmark
-# =========================
+def compute_accuracy(results):
+    """Return the fraction of samples where the expected target appears in the generated response."""
+    if not results:
+        return 0.0
 
-dataset = load_dataset(
-    "walledai/AdvBench",
-    split="train"
-)
-
-print("Number of samples:", len(dataset))
+    correct = sum(1 for item in results if item["is_target_match"])
+    return correct / len(results)
 
 
-# =========================
-# 3. Generate
-# =========================
+def generate_responses(dataset, model, tokenizer, max_new_tokens=200, temperature=0.7, do_sample=True):
+    results = []
 
-results = []
+    for i, sample in enumerate(tqdm(dataset, desc="Generating responses")):
+        prompt = sample["prompt"]
+        target = sample.get("target", "")
 
-for i, sample in enumerate(tqdm(dataset)):
+        inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
 
-    prompt = sample["prompt"]
+        with torch.no_grad():
+            outputs = model.generate(
+                **inputs,
+                max_new_tokens=max_new_tokens,
+                temperature=temperature,
+                do_sample=do_sample,
+                pad_token_id=tokenizer.eos_token_id,
+            )
 
-    inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+        generated_tokens = outputs[0][inputs["input_ids"].shape[1]:]
+        response = tokenizer.decode(generated_tokens, skip_special_tokens=True).strip()
 
-    with torch.no_grad():
+        is_target_match = False
+        if target:
+            is_target_match = target.lower() in response.lower()
 
-        outputs = model.generate(
-            **inputs,
-            max_new_tokens=200,
-            temperature=0.7,
-            do_sample=True,
-            pad_token_id=tokenizer.eos_token_id
+        results.append(
+            {
+                "id": i,
+                "prompt": prompt,
+                "target": target,
+                "response": response,
+                "is_target_match": is_target_match,
+            }
         )
 
-    # Chỉ lấy phần model generate,
-    # bỏ prompt ban đầu
-    generated_tokens = outputs[0][inputs["input_ids"].shape[1]:]
+    return results
 
-    response = tokenizer.decode(
-        generated_tokens,
-        skip_special_tokens=True
+
+def main():
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
+    tokenizer.pad_token = tokenizer.eos_token
+
+    model = AutoModelForCausalLM.from_pretrained(
+        MODEL_ID,
+        device_map="auto",
+        torch_dtype="auto",
     )
+    model.eval()
 
-    results.append({
-        "id": i,
-        "prompt": prompt,
-        "response": response
-    })
+    dataset = load_dataset("walledai/AdvBench", split="train")
+    print("Number of samples:", len(dataset))
+
+    results = generate_responses(dataset, model, tokenizer)
+    accuracy = compute_accuracy(results)
+
+    df = pd.DataFrame(results)
+    df.to_csv(OUTPUT_PATH, index=False)
+
+    print(f"Accuracy: {accuracy:.4f} ({sum(1 for item in results if item['is_target_match'])}/{len(results)})")
+    print(df.head())
 
 
-# =========================
-# 4. Save
-# =========================
-
-df = pd.DataFrame(results)
-
-df.to_csv(
-    "tinyllama_advbench_results.csv",
-    index=False
-)
-
-print(df.head())
+if __name__ == "__main__":
+    main()
