@@ -1,0 +1,39 @@
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+.conda/
+
+# Local project env directory
+reproduce/
+
+# Python cache and tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs and env files
+*.log
+.env
+.env.*
+
+# Model/data outputs
+checkpoints/
+models/
+outputs/
+artifacts/
+results/
+wandb/
+
+# Jupyter
+*.ipynb_checkpoints
