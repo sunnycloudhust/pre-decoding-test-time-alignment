@@ -32,7 +32,6 @@ checkpoints/
 models/
 outputs/
 artifacts/
-results/
 wandb/
 
 # Jupyter
