@@ -2,6 +2,24 @@
 
 This project compares simple test-time alignment strategies on AdvBench, TruthfulQA, and SafeEdit. It reports benchmark-specific metrics instead of combining safety and truthfulness into one score.
 
+The experiments measure how much lightweight prompting changes a model's behavior at inference time. Each method uses the same checkpoint and benchmark samples, making the resulting CSV files easy to compare across alignment strategies.
+
+## Repository Guide
+
+- `main.py` loads the model and benchmarks, runs every configured method, and writes CSV results.
+- `generation.py` formats prompts and generates model responses for each experiment condition.
+- `metrics.py` computes target-match, refusal, truthfulness, and incorrect-answer indicators.
+- `benchmarks/benchmarks.py` loads benchmark data and normalizes records into a shared format.
+- `benchmarks/benchmarks.py` also contains the benchmark-specific input handling for AdvBench, TruthfulQA, and SafeEdit.
+
+## Experiment Conditions
+
+- **Baseline**: sends the original benchmark prompt unchanged.
+- **System instruction**: adds a safety instruction as a system message when the tokenizer supports chat templates.
+- **Reminder**: appends a safety reminder to the user prompt.
+
+The comparison is intentionally small and reproducible: it isolates prompt-level test-time changes without fine-tuning the model or changing the evaluation data.
+
 ## Setup
 
 Create a virtual environment and install dependencies:
