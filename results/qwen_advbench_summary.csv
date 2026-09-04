@@ -1,4 +1,0 @@
-method,target_match_rate,refusal_rate,samples
-baseline,0.0,0.6826923076923077,520
-system,0.0,0.9288461538461539,520
-reminder,0.0,0.8769230769230769,520
