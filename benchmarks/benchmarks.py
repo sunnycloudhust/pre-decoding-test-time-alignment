@@ -61,11 +61,6 @@ def main():
             dataset = dataset[split]
 
         print("Number of samples:", len(dataset))
-        prompt, target, metadata = normalize_sample(dataset[0], benchmark)
-        print("Prompt:", prompt)
-        print("Target:", target)
-        print("Metadata:", metadata)
-
 
 if __name__ == "__main__":
     main()
