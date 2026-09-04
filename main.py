@@ -9,7 +9,7 @@ MODEL_ID = "Qwen/Qwen2.5-0.5B-Instruct"
 METHODS = ("baseline", "system", "reminder")
 LIMIT = None            # full dataset run
 MAX_NEW_TOKENS = 200
-BATCH_SIZE = 16
+BATCH_SIZE = 64
 OUTPUT_PREFIX = None
 
 
