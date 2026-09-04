@@ -1,7 +1,7 @@
 import torch
 from tqdm import tqdm
 
-from benchmarks import normalize_sample
+from benchmarks.benchmarks import normalize_sample
 from metrics import evaluate_result
 
 

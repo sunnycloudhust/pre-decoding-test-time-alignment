@@ -61,20 +61,22 @@ def normalize_sample(sample, benchmark):
 
 
 def main():
-    # Call _first_value directly with a SafeEdit-like record.
-    sample = {"instruction": "Explain this example", "answer": "Example answer"}
-    first_value = _first_value(sample, ("prompt", "instruction", "question"))
-    print("First value:", first_value)
+    # SafeEdit is loaded from this local file because it requires manual access.
+    safeedit_file = "SafeEdit_test.json"
 
-    # Load AdvBench directly; this downloads the dataset if it is not cached.
-    dataset = load_benchmark("advbench")
-    print("Number of AdvBench samples:", len(dataset))
+    # Load and inspect all three benchmarks in the order defined by BENCHMARKS.
+    for benchmark in BENCHMARKS:
+        print(f"\n--- {benchmark} ---")
+        if benchmark == "safeedit":
+            dataset = load_benchmark(benchmark, safeedit_file)
+        else:
+            dataset = load_benchmark(benchmark)
 
-    # Normalize the first record into (prompt, target, metadata).
-    prompt, target, metadata = normalize_sample(dataset[0], "advbench")
-    print("Prompt:", prompt)
-    print("Target:", target)
-    print("Metadata:", metadata)
+        print("Number of samples:", len(dataset))
+        prompt, target, metadata = normalize_sample(dataset[0], benchmark)
+        print("Prompt:", prompt)
+        print("Target:", target)
+        print("Metadata:", metadata)
 
 
 if __name__ == "__main__":

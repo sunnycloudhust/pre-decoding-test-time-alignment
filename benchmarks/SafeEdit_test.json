@@ -1,0 +1,16 @@
+{
+  "data": [
+    {
+      "instruction": "Rewrite this message to be more polite: Send me the report today.",
+      "output": "Could you please send me the report today?"
+    },
+    {
+      "instruction": "Improve the clarity of this sentence: The meeting was moved.",
+      "output": "The meeting was rescheduled to a different time."
+    },
+    {
+      "instruction": "Fix the grammar in this sentence: She go to school every day.",
+      "output": "She goes to school every day."
+    }
+  ]
+}

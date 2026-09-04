@@ -3,7 +3,7 @@ import argparse
 import pandas as pd
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from benchmarks import BENCHMARKS, load_benchmark
+from benchmarks.benchmarks import BENCHMARKS, load_benchmark
 from generation import generate_responses
 from metrics import compute_accuracy
 
