@@ -1,7 +1,6 @@
 import torch
 from tqdm import tqdm
 from benchmarks.benchmarks import BENCHMARKS, normalize_sample
-from metrics import evaluate_result
 
 METHODS = ("baseline", "system", "reminder")
 
@@ -78,7 +77,7 @@ def generate_responses(
                 "prompt": prompt,
                 "target": target,
                 "response": response,
-                **evaluate_result(benchmark, response, target, metadata),
+                "metadata": metadata,
             }
         )
     return results
