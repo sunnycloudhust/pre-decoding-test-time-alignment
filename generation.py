@@ -59,7 +59,7 @@ def generate_responses(
     original_padding_side = tokenizer.padding_side
     tokenizer.padding_side = "left"
     try:
-        for start in tqdm(range(0, len(dataset), batch_size), desc="Generating responses"):
+        for start in tqdm(range(0, len(dataset)), desc="Generating responses"):
             batch = [
                 normalize_sample(dataset[index], benchmark)
                 for index in range(start, min(start + batch_size, len(dataset)))
