@@ -1,5 +1,3 @@
-import json
-
 from datasets import load_dataset
 
 BENCHMARKS = ("advbench", "truthfulqa", "safeedit")
@@ -27,16 +25,7 @@ def load_benchmark(name, safeedit_file=None):
         return load_dataset("truthfulqa/truthful_qa", "generation", split="validation")
 
     if name == "safeedit":
-        if not safeedit_file:
-            raise ValueError(
-                "SafeEdit requires --safeedit-file after downloading SafeEdit_test.json "
-                "from zjunlp/SafeEdit"
-            )
-        with open(safeedit_file, encoding="utf-8") as file:
-            records = json.load(file)
-        if isinstance(records, dict):
-            records = records.get("data", records.get("test", []))
-        return records
+        return load_dataset("zjunlp/SafeEdit")
 
     raise ValueError(f"Unknown benchmark: {name}")
 
@@ -61,16 +50,15 @@ def normalize_sample(sample, benchmark):
 
 
 def main():
-    # SafeEdit is loaded from this local file because it requires manual access.
-    safeedit_file = "SafeEdit_test.json"
-
     # Load and inspect all three benchmarks in the order defined by BENCHMARKS.
     for benchmark in BENCHMARKS:
         print(f"\n--- {benchmark} ---")
-        if benchmark == "safeedit":
-            dataset = load_benchmark(benchmark, safeedit_file)
-        else:
-            dataset = load_benchmark(benchmark)
+        dataset = load_benchmark(benchmark)
+
+        # SafeEdit may return multiple splits; inspect its test split when available.
+        if benchmark == "safeedit" and hasattr(dataset, "keys"):
+            split = "test" if "test" in dataset else next(iter(dataset))
+            dataset = dataset[split]
 
         print("Number of samples:", len(dataset))
         prompt, target, metadata = normalize_sample(dataset[0], benchmark)
