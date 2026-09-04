@@ -1,15 +1,16 @@
 import torch
 from tqdm import tqdm
-
-from benchmarks.benchmarks import normalize_sample
+from benchmarks.benchmarks import BENCHMARKS, normalize_sample
 from metrics import evaluate_result
 
+METHODS = ("baseline", "system", "reminder")
 
+# This function prepares prompt for the models, based on different methods
 def format_prompt(prompt, tokenizer, method):
     if method == "baseline":
         return tokenizer(prompt, return_tensors="pt")
 
-    if method == "system":
+    elif method == "system":
         messages = [
             {
                 "role": "system",
@@ -42,12 +43,18 @@ def generate_responses(
     dataset,
     model,
     tokenizer,
-    benchmark="advbench",
-    method="baseline",
+    benchmark,
+    method,
     max_new_tokens=200,
     temperature=0.7,
-    do_sample=True,
-):
+    do_sample=True):
+    
+    if benchmark not in BENCHMARKS:
+        raise ValueError(f"Unknown benchmark: {benchmark}")
+    if method not in METHODS:
+        raise ValueError(f"Unknown method: {method}")
+
+
     results = []
     for i, sample in enumerate(tqdm(dataset, desc="Generating responses")):
         prompt, target, metadata = normalize_sample(sample, benchmark)
