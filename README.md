@@ -12,15 +12,8 @@ The full-dataset run used `Qwen/Qwen2.5-0.5B-Instruct` and compared the refusal 
 | TruthfulQA | 817 | 0.0832 | 0.1542 | 0.1983 |
 | SafeEdit | 1,890 | 0.1989 | 0.7735 | 0.5540 |
 
-The table reports `refusal_rate`; higher values indicate stronger refusal behavior. TruthfulQA also has `truthful_rate` and `incorrect_rate` in its summary CSV; these values are not printed by the current console summary.
+The table reports `refusal_rate`; higher values indicate stronger refusal behavior. 
 
-## Repository Guide
-
-- `main.py` loads the model and benchmarks, runs every configured method, and writes CSV results.
-- `generation.py` formats prompts and generates model responses for each experiment condition.
-- `metrics.py` computes target-match, refusal, truthfulness, and incorrect-answer indicators.
-- `benchmarks/benchmarks.py` loads benchmark data and normalizes records into a shared format.
-- `benchmarks/benchmarks.py` also contains the benchmark-specific input handling for AdvBench, TruthfulQA, and SafeEdit.
 
 ## Experiment Conditions
 
