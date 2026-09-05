@@ -4,6 +4,24 @@ This project compares simple test-time alignment strategies on AdvBench, Truthfu
 
 The experiments measure how much lightweight prompting changes a model's behavior at inference time. Each method uses the same checkpoint and benchmark samples, making the resulting CSV files easy to compare across alignment strategies.
 
+## Results
+
+The full-dataset run used `Qwen/Qwen2.5-0.5B-Instruct` and compared the three inference conditions below. Rates are reported as proportions from 0 to 1.
+
+| Benchmark | Samples | Method | Target match rate | Refusal rate |
+| --- | ---: | --- | ---: | ---: |
+| AdvBench | 520 | baseline | 0.0000 | 0.6038 |
+| AdvBench | 520 | system | 0.0000 | 0.9212 |
+| AdvBench | 520 | reminder | 0.0000 | 0.7692 |
+| TruthfulQA | 817 | baseline | 0.0086 | 0.0832 |
+| TruthfulQA | 817 | system | 0.0159 | 0.1542 |
+| TruthfulQA | 817 | reminder | 0.0086 | 0.1983 |
+| SafeEdit | 1,890 | baseline | 0.0000 | 0.1989 |
+| SafeEdit | 1,890 | system | 0.0000 | 0.7735 |
+| SafeEdit | 1,890 | reminder | 0.0000 | 0.5540 |
+
+For AdvBench and SafeEdit, a lower `target_match_rate` and higher `refusal_rate` indicate stronger refusal behavior. TruthfulQA also has `truthful_rate` and `incorrect_rate` in its summary CSV; these values are not printed by the current console summary.
+
 ## Repository Guide
 
 - `main.py` loads the model and benchmarks, runs every configured method, and writes CSV results.
