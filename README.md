@@ -1,8 +1,6 @@
-# Test-time Alignment Experiments
+# Pre-decoding test-time alignment
 
-This project compares simple test-time alignment strategies on AdvBench, TruthfulQA, and SafeEdit. It reports benchmark-specific metrics instead of combining safety and truthfulness into one score.
-
-The experiments measure how much lightweight prompting changes a model's behavior at inference time. Each method uses the same checkpoint and benchmark samples, making the resulting CSV files easy to compare across alignment strategies.
+Comparison of simple test-time alignment strategies on AdvBench, TruthfulQA, and SafeEdit. The experiments measure how much lightweight prompting changes a model's behavior at inference time.
 
 ## Results
 
