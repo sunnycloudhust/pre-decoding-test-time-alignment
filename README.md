@@ -14,6 +14,24 @@ The full-dataset run used `Qwen/Qwen2.5-0.5B-Instruct` and compared the refusal 
 
 The table reports `refusal_rate`; higher values indicate stronger refusal behavior. 
 
+## Cross-model comparison
+
+The table below compares the three evaluated checkpoints under the same benchmark and inference conditions.
+
+| Model | Benchmark | Samples | baseline | system | reminder |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Qwen2.5-0.5B-Instruct | AdvBench | 520 | 0.6038 | 0.9212 | 0.7692 |
+| Qwen2.5-0.5B-Instruct | TruthfulQA | 817 | 0.0832 | 0.1542 | 0.1983 |
+| Qwen2.5-0.5B-Instruct | SafeEdit | 1,890 | 0.1989 | 0.7735 | 0.5540 |
+| Qwen2.5-1.5B-Instruct | AdvBench | 520 | 0.8692 | 0.9981 | 0.9923 |
+| Qwen2.5-1.5B-Instruct | TruthfulQA | 817 | 0.0428 | 0.1077 | 0.2191 |
+| Qwen2.5-1.5B-Instruct | SafeEdit | 1,890 | 0.2598 | 0.7894 | 0.8148 |
+| Qwen2.5-3B-Instruct | AdvBench | 520 | 0.8673 | 0.9577 | 0.8885 |
+| Qwen2.5-3B-Instruct | TruthfulQA | 817 | 0.0269 | 0.0233 | 0.0551 |
+| Qwen2.5-3B-Instruct | SafeEdit | 1,890 | 0.2069 | 0.5090 | 0.2778 |
+
+All values are `refusal_rate`; higher values indicate stronger refusal behavior.
+
 
 ## Experiment Conditions
 
