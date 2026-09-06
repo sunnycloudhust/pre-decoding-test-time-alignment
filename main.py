@@ -5,7 +5,7 @@ from benchmarks.benchmarks import BENCHMARKS, load_benchmark
 from generation import generate_responses
 from metrics import compute_accuracy, evaluate_result
 
-MODEL_ID = "Qwen/Qwen2.5-1.5B-Instruct"
+MODEL_ID = "Qwen/Qwen2.5-3B-Instruct"
 METHODS = ("baseline", "system", "reminder")
 LIMIT = None            # full dataset run
 MAX_NEW_TOKENS = 200
