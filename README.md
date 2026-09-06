@@ -4,13 +4,13 @@ Comparison of simple test-time alignment strategies on AdvBench, TruthfulQA, and
 
 ## Results
 
-The full-dataset run used `Qwen/Qwen2.5-0.5B-Instruct` and compared the refusal rates of the three inference conditions below. Rates are reported as proportions from 0 to 1.
+The full-dataset run used `Qwen/Qwen2.5-1.5B-Instruct` and compared the refusal rates of the three inference conditions below. Rates are reported as proportions from 0 to 1.
 
 | Benchmark | Samples | baseline | system | reminder |
 | --- | ---: | ---: | ---: | ---: |
-| AdvBench | 520 | 0.6038 | 0.9212 | 0.7692 |
-| TruthfulQA | 817 | 0.0832 | 0.1542 | 0.1983 |
-| SafeEdit | 1,890 | 0.1989 | 0.7735 | 0.5540 |
+| AdvBench | 520 | 0.8692 | 0.9981 | 0.9923 |
+| TruthfulQA | 817 | 0.0428 | 0.1077 | 0.2191 |
+| SafeEdit | 1,890 | 0.2598 | 0.7894 | 0.8148 |
 
 The table reports `refusal_rate`; higher values indicate stronger refusal behavior. 
 
@@ -67,7 +67,7 @@ python main.py --benchmark safeedit --safeedit-file /path/to/SafeEdit_test.json 
 To run one condition or select a different checkpoint:
 
 ```bash
-python main.py --methods baseline --model-id Qwen/Qwen2.5-0.5B-Instruct
+python main.py --methods baseline --model-id Qwen/Qwen2.5-1.5B-Instruct
 ```
 
 The script will load the selected benchmark, generate responses for each prompt, compute benchmark-specific metrics, and save one CSV per method plus a summary CSV. Use `--output-prefix` when running multiple models so their output files do not overwrite one another.
@@ -98,7 +98,7 @@ For SafeEdit, the JSON record must contain one of `prompt`, `instruction`, `ques
 The current configuration uses an open-source model:
 
 ```python
-MODEL_ID = "Qwen/Qwen2.5-0.5B-Instruct"
+MODEL_ID = "Qwen/Qwen2.5-1.5B-Instruct"
 ```
 
 If you want to switch to another model, update `MODEL_ID` in `main.py`.
